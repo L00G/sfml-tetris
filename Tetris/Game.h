@@ -15,10 +15,10 @@ public:
 	void processInput();
 	void setPause(bool flag);
 	void setDelay(double delay);
-	void UpdateFPS();
-	void GameLoop();
-	void Update();
-	void Render();
+	void updateFPS();
+	void gameLoop();
+	void update();
+	void render();
 
 private:
 	const double MS_PER_UPDATE = 1. / FPS;

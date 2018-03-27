@@ -21,7 +21,7 @@ int main() {
 				game.inputKey(event);				
 			}
 		}
-		game.GameLoop();
+		game.gameLoop();
 	}
 	return 0;
 }
