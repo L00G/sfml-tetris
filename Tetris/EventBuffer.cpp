@@ -1,13 +1,12 @@
 #include "EventBuffer.h"
-#include <queue>
 
-void EventBuffer::PushKey(Event & e)
+void EventBuffer::PushKey(sf::Event & e)
 {
 	keyQueue.push(e.key.code);
 }
 
-Keyboard::Key EventBuffer::popKey() {		
-	Keyboard::Key key = keyQueue.front();
+sf::Keyboard::Key EventBuffer::popKey() {
+	sf::Keyboard::Key key = keyQueue.front();
 	keyQueue.pop();
 	return key;
 }

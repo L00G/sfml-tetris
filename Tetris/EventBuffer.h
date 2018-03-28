@@ -1,16 +1,14 @@
-#ifndef EVENTBUFFER_H
-#define EVENTBUFFER_H
+#ifndef _EVENTBUFFER_H_
+#define _EVENTBUFFER_H_
 
 #include <SFML/Graphics.hpp>
 #include <queue>
-using namespace std;
-using namespace sf;
 
 namespace EventBuffer {
-	static queue<Keyboard::Key> keyQueue;
+	static std::queue<sf::Keyboard::Key> keyQueue;
 
-	void PushKey(Event &e);
-	Keyboard::Key popKey();
+	void PushKey(sf::Event &e);
+	sf::Keyboard::Key popKey();
 	bool isEmpty();
 }
 

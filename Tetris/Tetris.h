@@ -1,11 +1,13 @@
-#pragma once
+#ifndef _TETRIS_H_
+#define _TETRIS_H_
 
 #include<SFML/Graphics.hpp>
 #include"Piece.h"
-using namespace sf;
 
-#define BOARD_WEIGHT 10
-#define BOARD_HEIGHT 25
+#endif
+
+static const int BOARD_WEIGHT = 10;
+static const int BOARD_HEIGHT = 25;
 
 class Tetris {
 public:
@@ -19,14 +21,14 @@ public:
 	void predict();
 	void drop();
 	void Rotate();
-	void drawBackground(RenderWindow &window);
-	void drawBlock(RenderWindow &window);
-	void render(RenderWindow &window);
-	void gameOverRender(RenderWindow &window);
+	void drawBackground(sf::RenderWindow &window);
+	void drawBlock(sf::RenderWindow &window);
+	void render(sf::RenderWindow &window);
+	void gameOverRender(sf::RenderWindow &window);
 
 private:
-	Texture block;
-	Sprite sprite;
+	sf::Texture block;
+	sf::Sprite sprite;
 	Piece piece, predictionPiece, nextPiece[2];
 	int board[BOARD_HEIGHT][BOARD_WEIGHT];
 	bool newBlockFlag;

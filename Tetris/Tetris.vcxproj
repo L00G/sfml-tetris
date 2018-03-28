@@ -23,6 +23,7 @@
     <ClCompile Include="EventBuffer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="SuffleBag.cpp" />
     <ClCompile Include="Tetris.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -32,6 +33,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="EventBuffer.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="SuffleBag.h" />
     <ClInclude Include="Tetris.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -11,7 +11,7 @@ Piece::~Piece()
 
 void Piece::newBlock()
 {
-	pieceNumber = rand() % 7 + 1;
+	pieceNumber = SuffleBag::next();
 	for (int i = 0; i < 4; i++) {
 		block[i].x = pieces[pieceNumber][i] % 2;
 		block[i].y = pieces[pieceNumber][i] / 2;
