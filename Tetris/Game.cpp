@@ -1,6 +1,6 @@
 #include "Game.h"
 
-	Game::Game(RenderWindow *_window) {
+	Game::Game(sf::RenderWindow *_window) {
 		window = _window;
 		Init();
 	}
@@ -10,25 +10,25 @@
 		lag = 0;
 		isPaused = false;
 	}
-	void Game::inputKey(Event &event)
+	void Game::inputKey(sf::Event &event)
 	{
 		EventBuffer::PushKey(event);
 	}
 	void Game::processInput()
 	{
 		if (!EventBuffer::isEmpty()) {
-			Keyboard::Key key = EventBuffer::popKey();
+			sf::Keyboard::Key key = EventBuffer::popKey();
 			if (!isPaused) {
 				switch (key) {
-				case Keyboard::Right:tetris.move(1,0); break;
-				case Keyboard::Left:tetris.move(-1,0); break;
-				case Keyboard::Up:tetris.Rotate(); break;
-				case Keyboard::Down:setDelay(.1); break;
-				case Keyboard::Space:tetris.drop(); break;
+				case sf::Keyboard::Right:tetris.move(1,0); break;
+				case sf::Keyboard::Left:tetris.move(-1,0); break;
+				case sf::Keyboard::Up:tetris.Rotate(); break;
+				case sf::Keyboard::Down:setDelay(.1); break;
+				case sf::Keyboard::Space:tetris.drop(); break;
 				default:break;
 				}
 			}
-			if (key == Keyboard::P) {
+			if (key == sf::Keyboard::P) {
 				setPause(!isPaused);
 			}
 		}
@@ -68,7 +68,7 @@
 		render();
 		double frameTime = clock.getElapsedTime().asSeconds();
 		if(MS_PER_UPDATE > frameTime)
-			sleep(seconds(MS_PER_UPDATE - frameTime));
+			sf::sleep(sf::seconds(MS_PER_UPDATE - frameTime));
 	}
 	void Game::update() {	
 		tetris.lineCheck();

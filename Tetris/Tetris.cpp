@@ -3,7 +3,7 @@
 Tetris::Tetris() {
 	srand(time(NULL));
 	block.loadFromFile("block.png");
-	sprite = Sprite(block);
+	sprite = sf::Sprite(block);
 }
 void Tetris::Init()
 {
@@ -68,77 +68,77 @@ void Tetris::predict() {
 }
 void Tetris::drop() {
 	while (!newBlockFlag) {
-		HorMove(1);
+		move(0,1);
 	}
 }
 void Tetris::Rotate() {
 	piece.rotate();
 	if (!check())piece.cancel();
 }
-void Tetris::drawBackground(RenderWindow &window) {
-	CircleShape dot(2.f);
-	dot.setFillColor(Color(52, 52, 52, 150));
+void Tetris::drawBackground(sf::RenderWindow &window) {
+	sf::CircleShape dot(2.f);
+	dot.setFillColor(sf::Color(52, 52, 52, 150));
 	for (int i = 0; i < 10; i++) {
-		dot.setPosition(Vector2f(i * 20 + 8, 50 + 5 * 20));
+		dot.setPosition(sf::Vector2f(i * 20 + 8, 50 + 5 * 20));
 		window.draw(dot);
 	}
 	for (int j = 0; j < 2; j++) {
-		sprite.setTextureRect(IntRect((nextPiece[j].getNumber() - 1) * 20, 0, 20, 20));
+		sprite.setTextureRect(sf::IntRect((nextPiece[j].getNumber()-1) * 20, 0, 20, 20));
 		for (int i = 0; i < 4; i++) {
-			sprite.setPosition(Vector2f(nextPiece[j].getBlock(i).x * 20 + 200 + j * 50, 50 + nextPiece[j].getBlock(i).y * 20 + 200));
+			sprite.setPosition(sf::Vector2f(nextPiece[j].getBlock(i).x * 20 + 200 + j * 50, 50 + nextPiece[j].getBlock(i).y * 20 + 200));
 			window.draw(sprite);
 		}
 	}
 }
-void Tetris::drawBlock(RenderWindow &window) {
+void Tetris::drawBlock(sf::RenderWindow &window) {
 	for (int y = 0; y < BOARD_HEIGHT; y++) {
 		for (int x = 0; x < BOARD_WEIGHT; x++) {
 			if (board[y][x]) {
-				sprite.setTextureRect(IntRect((board[y][x] - 1) * 20, 0, 20, 20));
-				sprite.setPosition(Vector2f(x * 20, 50 + y * 20));
+				sprite.setTextureRect(sf::IntRect((board[y][x]-1) * 20, 0, 20, 20));
+				sprite.setPosition(sf::Vector2f(x * 20, 50 + y * 20));
 				window.draw(sprite);
 			}
 		}
 	}
-	sprite.setTextureRect(IntRect((piece.getNumber() - 1) * 20, 0, 20, 20));
+	sprite.setTextureRect(sf::IntRect((piece.getNumber()-1) * 20, 0, 20, 20));
 	for (int i = 0; i < 4; i++) {
-		sprite.setPosition(Vector2f(piece.getBlock(i).x * 20, 50 + piece.getBlock(i).y * 20));
+		sprite.setPosition(sf::Vector2f(piece.getBlock(i).x * 20, 50 + piece.getBlock(i).y * 20));
 		window.draw(sprite);
 	}
 
-	sprite.setColor(Color(255, 255, 255, 80));
+	sprite.setColor(sf::Color(255, 255, 255, 80));
 	for (int i = 0; i < 4; i++) {
-		sprite.setPosition(Vector2f(predictionPiece.getBlock(i).x * 20, 50 + predictionPiece.getBlock(i).y * 20));
+		sprite.setPosition(sf::Vector2f(predictionPiece.getBlock(i).x * 20, 50 + predictionPiece.getBlock(i).y * 20));
 		window.draw(sprite);
 	}
-	sprite.setColor(Color(255, 255, 255, 255));
+	sprite.setColor(sf::Color(255, 255, 255, 255));
 }
-void Tetris::render(RenderWindow &window) {
-	window.clear(Color::White);
+void Tetris::render(sf::RenderWindow &window) {
+	window.clear(sf::Color::White);
 	drawBackground(window);
 	drawBlock(window);
 	window.display();
 }
-void Tetris::gameOverRender(RenderWindow &window) {
-	Clock clock;
+void Tetris::gameOverRender(sf::RenderWindow &window) {
+	sf::Clock clock;
 	float time = 0;
 	for (int i = 0; i < BOARD_HEIGHT;) {
 		time += clock.restart().asSeconds();
 		if (time < 0.1)continue;
-		window.clear(Color::White);
+		window.clear(sf::Color::White);
 		drawBackground(window);
 		drawBlock(window);
-		sprite.setTextureRect(IntRect(0, 0, 20, 20));
-		sprite.setColor(Color(100, 100, 100, 255));
+		sprite.setTextureRect(sf::IntRect(0, 0, 20, 20));
+		sprite.setColor(sf::Color(100, 100, 100, 255));
 		for (int y = 0; y < i; y++) {
 			for (int x = 0; x < BOARD_WEIGHT; x++) {
 				if (board[y][x]) {
-					sprite.setPosition(Vector2f(x * 20, 50 + y * 20));
+					sprite.setPosition(sf::Vector2f(x * 20, 50 + y * 20));
 					window.draw(sprite);
 				}
 			}
 		}
-		sprite.setColor(Color(255, 255, 255, 255));
+		sprite.setColor(sf::Color(255, 255, 255, 255));
 		window.display();
 		time -= 0.1;
 		i++;
