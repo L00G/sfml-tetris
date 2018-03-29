@@ -1,6 +1,6 @@
-#include "SuffleBag.h"
+#include "ShuffleBag.h"
 
-void SuffleBag::fill()
+void ShuffleBag::fill()
 {
 	srand(time_t(NULL));
 	int i = 1;
@@ -9,17 +9,17 @@ void SuffleBag::fill()
 	}
 }
 
-void SuffleBag::add(int nubmer, int count)
+void ShuffleBag::add(int nubmer, int count)
 {
 	for (int i = 0; i < count; i++)
 		pool[++pos] = nubmer;
 }
 
-int SuffleBag::next()
+int ShuffleBag::next()
 {
 	if (pos == -1)fill();
-	int random = rand() % pos;
-	if(pool[random]==preNumber)random = rand() % pos;
+	int random = rand() % (pos+1);
+	if(pool[random]==preNumber)random = rand() % (pos + 1);
 	int temp = pool[pos];
 	pool[pos] = pool[random];
 	pool[random] = temp;

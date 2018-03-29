@@ -35,7 +35,10 @@
     <ClCompile Include="Piece.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SuffleBag.cpp">
+    <ClCompile Include="ShuffleBag.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -52,7 +55,10 @@
     <ClInclude Include="Piece.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SuffleBag.h">
+    <ClInclude Include="ShuffleBag.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

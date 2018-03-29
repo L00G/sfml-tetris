@@ -12,24 +12,25 @@ static const int BOARD_HEIGHT = 25;
 class Tetris {
 public:
 	Tetris();
-	void Init();
+	virtual void Init();
 	void newBlock();
 	bool check();
 	bool isOver();
 	void lineCheck();
 	void move(int dx,int dy);
-	void predict();
 	void drop();
-	void Rotate();
+	void rotate();
+	virtual void update(double time) = 0;
+	virtual void render(sf::RenderWindow &window) = 0;
 	void drawBackground(sf::RenderWindow &window);
-	void drawBlock(sf::RenderWindow &window);
-	void render(sf::RenderWindow &window);
-	void gameOverRender(sf::RenderWindow &window);
+	void drawAllBlock(sf::RenderWindow &window);
+	void drawNowBlock(sf::RenderWindow & window);
+	void gameOver(int height);
 
-private:
+protected:
 	sf::Texture block;
 	sf::Sprite sprite;
-	Piece piece, predictionPiece, nextPiece[2];
+	Piece piece, nextPiece[2];
 	int board[BOARD_HEIGHT][BOARD_WEIGHT];
 	bool newBlockFlag;
 };

@@ -58,20 +58,12 @@ void Tetris::move(int dx, int dy) {
 		}
 	}
 }
-void Tetris::predict() {
-	predictionPiece = piece;
-	while (check()) {
-		piece.move(0, 1);
-	}
-	piece.cancel();
-	Piece::swap(piece, predictionPiece);
-}
 void Tetris::drop() {
 	while (!newBlockFlag) {
 		move(0,1);
 	}
 }
-void Tetris::Rotate() {
+void Tetris::rotate() {
 	piece.rotate();
 	if (!check())piece.cancel();
 }
@@ -90,7 +82,7 @@ void Tetris::drawBackground(sf::RenderWindow &window) {
 		}
 	}
 }
-void Tetris::drawBlock(sf::RenderWindow &window) {
+void Tetris::drawAllBlock(sf::RenderWindow &window) {
 	for (int y = 0; y < BOARD_HEIGHT; y++) {
 		for (int x = 0; x < BOARD_WEIGHT; x++) {
 			if (board[y][x]) {
@@ -100,47 +92,18 @@ void Tetris::drawBlock(sf::RenderWindow &window) {
 			}
 		}
 	}
-	sprite.setTextureRect(sf::IntRect((piece.getNumber()-1) * 20, 0, 20, 20));
+}
+void Tetris::drawNowBlock(sf::RenderWindow &window) {
+	sprite.setTextureRect(sf::IntRect((piece.getNumber() - 1) * 20, 0, 20, 20));
 	for (int i = 0; i < 4; i++) {
 		sprite.setPosition(sf::Vector2f(piece.getBlock(i).x * 20, 50 + piece.getBlock(i).y * 20));
 		window.draw(sprite);
 	}
-
-	sprite.setColor(sf::Color(255, 255, 255, 80));
-	for (int i = 0; i < 4; i++) {
-		sprite.setPosition(sf::Vector2f(predictionPiece.getBlock(i).x * 20, 50 + predictionPiece.getBlock(i).y * 20));
-		window.draw(sprite);
-	}
-	sprite.setColor(sf::Color(255, 255, 255, 255));
 }
-void Tetris::render(sf::RenderWindow &window) {
-	window.clear(sf::Color::White);
-	drawBackground(window);
-	drawBlock(window);
-	window.display();
-}
-void Tetris::gameOverRender(sf::RenderWindow &window) {
-	sf::Clock clock;
-	float time = 0;
-	for (int i = 0; i < BOARD_HEIGHT;) {
-		time += clock.restart().asSeconds();
-		if (time < 0.1)continue;
-		window.clear(sf::Color::White);
-		drawBackground(window);
-		drawBlock(window);
-		sprite.setTextureRect(sf::IntRect(0, 0, 20, 20));
-		sprite.setColor(sf::Color(100, 100, 100, 255));
-		for (int y = 0; y < i; y++) {
-			for (int x = 0; x < BOARD_WEIGHT; x++) {
-				if (board[y][x]) {
-					sprite.setPosition(sf::Vector2f(x * 20, 50 + y * 20));
-					window.draw(sprite);
-				}
-			}
+void Tetris::gameOver(int height) {
+	for (int x = 0; x < BOARD_WEIGHT; x++) {
+		if (board[height][x]) {
+			board[height][x] = 8;
 		}
-		sprite.setColor(sf::Color(255, 255, 255, 255));
-		window.display();
-		time -= 0.1;
-		i++;
 	}
 }

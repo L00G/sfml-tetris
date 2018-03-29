@@ -4,9 +4,9 @@
 		window = _window;
 		Init();
 	}
-	void Game::Init() {
-		tetris.Init();
-		timer = 0; delay = .3;
+	void Game::Init(){
+		clock.restart();
+		pplayer->Init();
 		lag = 0;
 		isPaused = false;
 	}
@@ -20,11 +20,11 @@
 			sf::Keyboard::Key key = EventBuffer::popKey();
 			if (!isPaused) {
 				switch (key) {
-				case sf::Keyboard::Right:tetris.move(1,0); break;
-				case sf::Keyboard::Left:tetris.move(-1,0); break;
-				case sf::Keyboard::Up:tetris.Rotate(); break;
-				case sf::Keyboard::Down:setDelay(.1); break;
-				case sf::Keyboard::Space:tetris.drop(); break;
+				case sf::Keyboard::Right:pplayer->move(1,0); break;
+				case sf::Keyboard::Left:pplayer->move(-1,0); break;
+				case sf::Keyboard::Up:pplayer->rotate(); break;
+				case sf::Keyboard::Down:((Player*)pplayer)->setDelay(.1); break;
+				case sf::Keyboard::Space:pplayer->drop(); break;
 				default:break;
 				}
 			}
@@ -35,9 +35,6 @@
 	}
 	void Game::setPause(bool flag) {
 		isPaused = flag;
-	}
-	void Game::setDelay(double delay) {
-		this->delay = delay;
 	}
 	void Game::updateFPS()
 	{
@@ -55,11 +52,10 @@
 	void Game::gameLoop() {
 		double time = clock.restart().asSeconds();
 		processInput();
-		timer += time;
 		lag += time;
 		while (lag >= MS_PER_UPDATE) {
 			if (!isPaused) {
-				update();
+				update(MS_PER_UPDATE);
 			}
 			lag -= MS_PER_UPDATE;
 		}
@@ -70,25 +66,10 @@
 		if(MS_PER_UPDATE > frameTime)
 			sf::sleep(sf::seconds(MS_PER_UPDATE - frameTime));
 	}
-	void Game::update() {	
-		tetris.lineCheck();
-		if (!tetris.isOver()) {
-			tetris.newBlock();
-			tetris.predict();
-
-			if (timer > delay) {
-				tetris.move(0,1);
-				delay = .3;
-				timer = 0;
-			}
-		}
+	void Game::update(double time) {
+		pplayer->update(time);
 	}
 	void Game::render()
 	{
-		if (tetris.isOver()) {
-			tetris.gameOverRender(*window);
-			Init();
-		}
-		else tetris.render(*window);
+		pplayer->render(*window);
 	}
-	

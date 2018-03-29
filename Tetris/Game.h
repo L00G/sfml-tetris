@@ -2,12 +2,12 @@
 #define _GAME_H_
 
 #include <SFML/Graphics.hpp>
-#include "Tetris.h"
+#include "Player.h"
 #include "EventBuffer.h"
 
 #endif
 
-static const int FPS = 42;
+static const int FPS = 144;
 
 class Game {
 public:
@@ -16,20 +16,19 @@ public:
 	void inputKey(sf::Event &evnet);
 	void processInput();
 	void setPause(bool flag);
-	void setDelay(double delay);
 	void updateFPS();
 	void gameLoop();
-	void update();
+	void update(double time);
 	void render();
 
 private:
 	const double MS_PER_UPDATE = 1. / FPS;
 	sf::RenderWindow *window;
-	Tetris tetris;
+	Tetris *pplayer= new Player();;
 	sf::Texture block;
 	sf::Sprite sprite;
 	sf::Clock clock;
-	double timer, lag, delay , fpsElapsed;
+	double lag, fpsElapsed;
 	int frameCount;
 	bool isPaused;
 };

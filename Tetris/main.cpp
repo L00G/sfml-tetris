@@ -10,7 +10,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(400, 800),"Tetris");
 
 	Game game = Game(&window);
-	
+
 	while (window.isOpen()) {		
 		sf::Event event;
 		while (window.pollEvent(event)) {

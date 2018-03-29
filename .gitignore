@@ -42,3 +42,5 @@
 *.iobj
 
 *.ipdb
+
+*.enc

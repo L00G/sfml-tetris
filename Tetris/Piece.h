@@ -1,7 +1,7 @@
 #ifndef _PIECE_H_
 #define _PIECE_H_
 
-#include "SuffleBag.h"
+#include "ShuffleBag.h"
 struct Point { int x, y; };
 
 #endif
