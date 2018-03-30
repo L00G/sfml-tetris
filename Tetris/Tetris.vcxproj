@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="EventBuffer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -31,6 +32,7 @@
     <Image Include="block.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="EventBuffer.h" />
     <ClInclude Include="Piece.h" />

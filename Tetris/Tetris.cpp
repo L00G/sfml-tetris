@@ -16,6 +16,14 @@ void Tetris::Init()
 	for (int i = 0; i < 2; i++)nextPiece[i].newBlock();
 	newBlockFlag = false;
 }
+void Tetris::speedUp()
+{
+	speedState++;
+}
+void Tetris::speedDown()
+{
+	speedState--;
+}
 void Tetris::newBlock() {
 	if (newBlockFlag) {
 		piece = nextPiece[0]; nextPiece[0] = nextPiece[1]; nextPiece[1].newBlock();

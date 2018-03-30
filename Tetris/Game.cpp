@@ -25,6 +25,8 @@
 				case sf::Keyboard::Up:pplayer->rotate(); break;
 				case sf::Keyboard::Down:((Player*)pplayer)->setDelay(.1); break;
 				case sf::Keyboard::Space:pplayer->drop(); break;
+				case sf::Keyboard::Add:pplayer->speedUp(); break;
+				case sf::Keyboard::Subtract:pplayer->speedDown(); break;
 				default:break;
 				}
 			}
@@ -61,7 +63,7 @@
 		}
 		fpsElapsed += time;
 		updateFPS();
-		render();
+		//render();
 		double frameTime = clock.getElapsedTime().asSeconds();
 		if(MS_PER_UPDATE > frameTime)
 			sf::sleep(sf::seconds(MS_PER_UPDATE - frameTime));
@@ -71,5 +73,7 @@
 	}
 	void Game::render()
 	{
+		window->clear(sf::Color::White);
 		pplayer->render(*window);
+		window->display();
 	}

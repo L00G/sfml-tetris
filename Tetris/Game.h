@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "AI.h"
 #include "EventBuffer.h"
 
 #endif
@@ -24,7 +25,7 @@ public:
 private:
 	const double MS_PER_UPDATE = 1. / FPS;
 	sf::RenderWindow *window;
-	Tetris *pplayer= new Player();;
+	Tetris *pplayer= new AI(true);
 	sf::Texture block;
 	sf::Sprite sprite;
 	sf::Clock clock;

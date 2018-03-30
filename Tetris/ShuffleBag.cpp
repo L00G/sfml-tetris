@@ -2,7 +2,7 @@
 
 void ShuffleBag::fill()
 {
-	srand(time_t(NULL));
+	srand(time(NULL));
 	int i = 1;
 	for (std::pair<std::string, int> piece : piecesPercent) {
 		add(i++, piece.second);
@@ -17,7 +17,7 @@ void ShuffleBag::add(int nubmer, int count)
 
 int ShuffleBag::next()
 {
-	if (pos == -1)fill();
+	if (pos < 10)fill();
 	int random = rand() % (pos+1);
 	if(pool[random]==preNumber)random = rand() % (pos + 1);
 	int temp = pool[pos];

@@ -1,11 +1,9 @@
 #include "Player.h"
 
 
-
 Player::Player()
 {
 }
-
 
 Player::~Player()
 {
@@ -14,13 +12,13 @@ Player::~Player()
 void Player::Init()
 {
 	timer = 0;
-	delay = 0.3;
+	delay = 0.3 / speedState;
 	Tetris::Init();
 }
 
 void Player::setDelay(double _delay)
 {
-	delay = _delay;
+	delay = _delay / speedState;
 }
 
 void Player::update(double time)
@@ -34,8 +32,8 @@ void Player::update(double time)
 
 		while (timer > delay) {
 			move(0, 1);
-			timer -= delay;
-			delay = .3;
+			timer -= delay ;
+			delay = .3 / speedState;
 		}
 	}
 	else {
@@ -46,14 +44,12 @@ void Player::update(double time)
 
 void Player::render(sf::RenderWindow & window)
 {
-	window.clear(sf::Color::White);
 	drawBackground(window);
 	drawAllBlock(window);
 	if (!isOver()) {
 		drawNowBlock(window);
 		drawPrediction(window);
 	}
-	window.display();
 }
 
 void Player::drawPrediction(sf::RenderWindow & window)

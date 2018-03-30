@@ -4,8 +4,6 @@
 #include<SFML/Graphics.hpp>
 #include"Piece.h"
 
-#endif
-
 static const int BOARD_WEIGHT = 10;
 static const int BOARD_HEIGHT = 25;
 
@@ -13,6 +11,8 @@ class Tetris {
 public:
 	Tetris();
 	virtual void Init();
+	void speedUp();
+	void speedDown();
 	void newBlock();
 	bool check();
 	bool isOver();
@@ -31,6 +31,10 @@ protected:
 	sf::Texture block;
 	sf::Sprite sprite;
 	Piece piece, nextPiece[2];
+	double delay;
 	int board[BOARD_HEIGHT][BOARD_WEIGHT];
+	int speedState = 1;
 	bool newBlockFlag;
 };
+
+#endif

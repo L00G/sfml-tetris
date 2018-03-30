@@ -13,7 +13,7 @@ void Piece::newBlock()
 {
 	pieceNumber = ShuffleBag::next();
 	for (int i = 0; i < 4; i++) {
-		block[i].x = pieces[pieceNumber][i] % 2;
+		block[i].x = pieces[pieceNumber][i] % 2+4;
 		block[i].y = pieces[pieceNumber][i] / 2;
 		preBlock[i] = block[i];
 	}
