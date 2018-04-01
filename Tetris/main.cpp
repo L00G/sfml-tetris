@@ -128,7 +128,7 @@ int main() {
 			if (data.first == 2)game.startGenetic(data.second.first, data.second.second);
 		}
 		else if (choice == 2) {
-			if (!_waccess_s(L"result.txt", 0)) {
+			if (!_waccess_s(L"offset.txt", 0)) {
 				game.startAI();
 			}
 			else {

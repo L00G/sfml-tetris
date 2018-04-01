@@ -16,6 +16,15 @@ void Player::Init()
 	Tetris::Init();
 }
 
+void Player::predict() {
+	predictionPiece = piece;
+	while (check()) {
+		piece.move(0, 1);
+	}
+	piece.cancel();
+	Piece::swap(piece, predictionPiece);
+}
+
 void Player::setDelay(double _delay)
 {
 	delay = _delay / speedState;
@@ -42,16 +51,6 @@ void Player::update(double time)
 	}
 }
 
-void Player::render(sf::RenderWindow & window)
-{
-	drawBackground(window);
-	drawAllBlock(window);
-	if (!isOver()) {
-		drawNowBlock(window);
-		drawPrediction(window);
-	}
-}
-
 void Player::drawPrediction(sf::RenderWindow & window)
 {
 	sprite.setColor(sf::Color(255, 255, 255, 80));
@@ -62,11 +61,12 @@ void Player::drawPrediction(sf::RenderWindow & window)
 	sprite.setColor(sf::Color(255, 255, 255, 255));
 }
 
-void Player::predict() {
-	predictionPiece = piece;
-	while (check()) {
-		piece.move(0, 1);
+void Player::render(sf::RenderWindow & window)
+{
+	drawBackground(window);
+	drawAllBlock(window);
+	if (!isOver()) {
+		drawNowBlock(window);
+		drawPrediction(window);
 	}
-	piece.cancel();
-	Piece::swap(piece, predictionPiece);
 }

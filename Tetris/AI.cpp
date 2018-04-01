@@ -1,25 +1,31 @@
+#include <fstream>
+#include <iostream>
 #include "Ai.h"
+
+std::ofstream writeFile;
 
 AI::AI()
 {
+	traning = false;
+	
 	generation = new Gen();
 
-	FILE *stream;
-	errno_t err = freopen_s(&stream, "result.txt", "r", stdin);
-	if (err != 0)
-		fprintf(stdout, "error on freopen\n");
-	else
-	{
-		fscanf_s(stream, "%lf %lf %lf %lf", &generation->chromosome[0], &generation->chromosome[1], &generation->chromosome[2], &generation->chromosome[3]);
-		fclose(stream);
+	std::ifstream  readFile("offset.txt");
+	if (readFile.is_open()) {
+		readFile >> generation->chromosome[0] >> generation->chromosome[1]>> generation->chromosome[2]>>generation->chromosome[3];
+		readFile.close();
 	}
+	
 	timer = 0;
 	delay = 0.3;
 }
 
-AI::AI(int _numberRepetitions, int _generationNumber) {
+AI::AI(int _generationNumber, int _numberRepetitions) {
+	traning = true;
+	
 	numberRepetitions = _numberRepetitions;
 	generationNumber = _generationNumber;
+	nowRepetitions = 0;
 
 	generation = new Gen[generationNumber*1.3 + 5];
 	offspring = new Gen[generationNumber*0.3 + 5];
@@ -30,6 +36,13 @@ AI::AI(int _numberRepetitions, int _generationNumber) {
 	}
 	calcutateFitness(generation, generationNumber);
 	qsort(generation, generationNumber, sizeof(Gen), compare);
+
+	writeFile.open("log.txt", std::ofstream::app | std::ofstream::ate);
+	if (writeFile.is_open()) {
+		writeFile << "----Traing Result----" << std::endl;
+		writeFile << "Setting  [ numberRepetitions : "<<numberRepetitions<<", generationNumber : "<<generationNumber<<" ]" << std::endl;
+		writeFile << "#Case Number:" << nowRepetitions << " Max Clear Line Count : " << generation[0].fitness << "   Result : " << generation[0].chromosome[0] << " " << generation[0].chromosome[1] << " " << generation[0].chromosome[2] << " " << generation[0].chromosome[3] << std::endl;
+	}
 }
 
 AI::~AI()
@@ -169,9 +182,14 @@ void AI::nextGeneration()
 		generation[generationNumber+i] = offspring[i];
 	}
 
+	int maxfitness = generation[0].fitness;
 	qsort(generation, generationNumber + maxOffspring, sizeof(Gen), compare);
-
-	printf("#%d max clear : %d, %f %f %f %f\n", nowRepetitions++, generation[0].fitness, generation[0].chromosome[0], generation[0].chromosome[1], generation[0].chromosome[2], generation[0].chromosome[3]);
+	if (maxfitness < generation[0].fitness) {	
+		if (writeFile.is_open()) {
+			writeFile << "#Case Number:" << nowRepetitions << " Max Clear Line Count : " << generation[0].fitness << "   Result : " << generation[0].chromosome[0] << " " << generation[0].chromosome[1] << " " << generation[0].chromosome[2] << " " << generation[0].chromosome[3] << std::endl;
+		}
+	}
+	printf("#Case Number: %d max clear : %d, Result : %f %f %f %f\n", (nowRepetitions++)+1, generation[0].fitness, generation[0].chromosome[0], generation[0].chromosome[1], generation[0].chromosome[2], generation[0].chromosome[3]);
 	
 	int total = 0;
 	for (int i = 0; i < generationNumber; i++) {
@@ -204,13 +222,45 @@ void AI::update(double time)
 {
 	timer += time;
 
-	while (timer > delay) {
-		nextGeneration();
-		timer = 0;
+	if (traning) {
+		while (nowRepetitions < numberRepetitions) {
+			nextGeneration();
+		}
+		writeFile << "If you want test, Copy this to 'offset.txt' : " << generation[0].chromosome[0] << " " << generation[0].chromosome[1] << " " << generation[0].chromosome[2] << " " << generation[0].chromosome[3] << std::endl;
+		writeFile << std::endl;
+		writeFile.close();
+	}
+	else {
+		lineCheck();
+		if (!isOver()) {
+			newBlock();
+
+			while (timer > delay) {
+				Move move = bestMove(*generation);
+				generation->fitness += move.clearLine;
+				for (int j = 0; j < move.rotateCount; j++)piece.rotate();
+				while (check())piece.move(-1, 0);
+				piece.cancel();
+				for (int j = 0; j < move.moveCount; j++)piece.move(1, 0);
+				drop();
+				timer -= delay;
+				delay = .3 / speedState;
+			}
+		}
+		else {
+			gameOver(timer / 0.1);
+			if (timer > 2)Init();
+		}
 	}
 }
 
 void AI::render(sf::RenderWindow & window)
 {
-	//nothing 
+	if (!traning) {
+		drawBackground(window);
+		drawAllBlock(window);
+		if (!isOver()) {
+			drawNowBlock(window);
+		}
+	}
 }

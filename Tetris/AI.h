@@ -40,8 +40,9 @@ public:
 	virtual void update(double time) override;
 	virtual void render(sf::RenderWindow & window) override;
 public:
-	Gen *generation, *offspring;
+	Gen * generation, *offspring;
 	int numberRepetitions, generationNumber;
 	int nowRepetitions;
+	bool traning;
 };
 

@@ -1,0 +1,10 @@
+----Traing Result----
+Setting  [ numberRepetitions : 10, generationNumber : 10 ]
+#Case Number:0 Max Clear Line Count : 11   Result : 0.0277204 0.492755 -0.124112 -0.355412
+#Case Number:9 Max Clear Line Count : 18   Result : 0.126207 0.311271 -0.104844 -0.457679
+----Traing Result----
+Setting  [ numberRepetitions : 10, generationNumber : 10 ]
+#Case Number:0 Max Clear Line Count : 115   Result : 0.316491 0.151171 -0.275507 -0.256831
+#Case Number:4 Max Clear Line Count : 138   Result : 0.52171 0.138589 -0.0653038 -0.166088
+#Case Number:7 Max Clear Line Count : 277   Result : 0.634021 0.167709 -0.0419966 -0.156273
+If you want Test This reuslt, copy this to offset.txt : 0.634021 0.167709 -0.0419966 -0.156273

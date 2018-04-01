@@ -5,7 +5,7 @@ Tetris::Tetris() {
 	srand(time(NULL));
 	block.loadFromFile("block.png");
 	sprite = sf::Sprite(block);
-	font.loadFromFile("Tahu!.ttf");
+	font.loadFromFile("AllAgesDEMO.ttf");
 }
 void Tetris::Init()
 {

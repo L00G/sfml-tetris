@@ -40,6 +40,10 @@
     <ClInclude Include="ShuffleBag.h" />
     <ClInclude Include="Tetris.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="log.txt" />
+    <Text Include="offset.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7CC9B5A4-AA51-41C4-8C58-BBECAC0DAD7B}</ProjectGuid>
