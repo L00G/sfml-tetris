@@ -1,14 +1,29 @@
 #include "Game.h"
 
-	Game::Game(sf::RenderWindow *_window) {
-		window = _window;
-		Init();
+	Game::Game() {
+
 	}
 	void Game::Init(){
 		clock.restart();
-		pplayer->Init();
 		lag = 0;
+		play = true;
 		isPaused = false;
+		tetris->Init();
+	}
+	void Game::startAI()
+	{
+		tetris = new AI();
+		Init();
+	}
+	void Game::startGenetic(int _numberRepetitions, int _generationNumber)
+	{
+		tetris = new AI(_numberRepetitions, _generationNumber);
+		Init();
+	}
+	void Game::startPlayer()
+	{		
+		tetris = new Player();
+		Init();
 	}
 	void Game::inputKey(sf::Event &event)
 	{
@@ -20,13 +35,14 @@
 			sf::Keyboard::Key key = EventBuffer::popKey();
 			if (!isPaused) {
 				switch (key) {
-				case sf::Keyboard::Right:pplayer->move(1,0); break;
-				case sf::Keyboard::Left:pplayer->move(-1,0); break;
-				case sf::Keyboard::Up:pplayer->rotate(); break;
-				case sf::Keyboard::Down:((Player*)pplayer)->setDelay(.1); break;
-				case sf::Keyboard::Space:pplayer->drop(); break;
-				case sf::Keyboard::Add:pplayer->speedUp(); break;
-				case sf::Keyboard::Subtract:pplayer->speedDown(); break;
+				case sf::Keyboard::Right:tetris->move(1,0); break;
+				case sf::Keyboard::Left:tetris->move(-1,0); break;
+				case sf::Keyboard::Up:tetris->rotate(); break;
+				case sf::Keyboard::Down:((Player*)tetris)->setDelay(.1); break;
+				case sf::Keyboard::Space:tetris->drop(); break;
+				case sf::Keyboard::Add:tetris->speedUp(); break;
+				case sf::Keyboard::Subtract:tetris->speedDown(); break;
+				case sf::Keyboard::Escape:play = false; break;
 				default:break;
 				}
 			}
@@ -34,6 +50,9 @@
 				setPause(!isPaused);
 			}
 		}
+	}
+	bool Game::isPlay() {
+		return play;
 	}
 	void Game::setPause(bool flag) {
 		isPaused = flag;
@@ -43,15 +62,13 @@
 		frameCount++;
 		if (fpsElapsed >= 1.0f)     
 		{
-			int fps = (double)frameCount / fpsElapsed;
-			char str[30];
-			sprintf_s(str, "FPS : %d", fps);
-			window->setTitle(str);
+			fps = (double)frameCount / fpsElapsed;
 			frameCount = 0;
 			fpsElapsed = 0;
 		}
 	}
-	void Game::gameLoop() {
+	void Game::gameLoop(sf::RenderWindow &window)
+	{
 		double time = clock.restart().asSeconds();
 		processInput();
 		lag += time;
@@ -63,17 +80,17 @@
 		}
 		fpsElapsed += time;
 		updateFPS();
-		//render();
+		render(window);
 		double frameTime = clock.getElapsedTime().asSeconds();
-		if(MS_PER_UPDATE > frameTime)
+		if (MS_PER_UPDATE > frameTime)
 			sf::sleep(sf::seconds(MS_PER_UPDATE - frameTime));
 	}
 	void Game::update(double time) {
-		pplayer->update(time);
+		tetris->update(time);
 	}
-	void Game::render()
-	{
-		window->clear(sf::Color::White);
-		pplayer->render(*window);
-		window->display();
+	void Game::render(sf::RenderWindow &window)
+	{	
+		window.clear(sf::Color::White);	
+		tetris->render(window);
+		window.display();
 	}

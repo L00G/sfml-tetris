@@ -30,10 +30,11 @@ public:
 protected:
 	sf::Texture block;
 	sf::Sprite sprite;
+	sf::Font font;
 	Piece piece, nextPiece[2];
-	double delay;
+	double timer, delay;
 	int board[BOARD_HEIGHT][BOARD_WEIGHT];
-	int speedState = 1;
+	int speedState, lineCount;
 	bool newBlockFlag;
 };
 

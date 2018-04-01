@@ -6,30 +6,31 @@
 #include "AI.h"
 #include "EventBuffer.h"
 
-#endif
-
 static const int FPS = 144;
 
 class Game {
 public:
-	Game(sf::RenderWindow *window);
+	Game();
 	void Init();
+	void startAI();
+	void startGenetic(int _numberRepetitions, int _generationNumber);
+	void startPlayer();
 	void inputKey(sf::Event &evnet);
 	void processInput();
+	bool isPlay();
 	void setPause(bool flag);
 	void updateFPS();
-	void gameLoop();
+	void gameLoop(sf::RenderWindow &window);
 	void update(double time);
-	void render();
+	void render(sf::RenderWindow &window);
 
 private:
 	const double MS_PER_UPDATE = 1. / FPS;
-	sf::RenderWindow *window;
-	Tetris *pplayer= new AI(true);
-	sf::Texture block;
-	sf::Sprite sprite;
+	Tetris *tetris;
 	sf::Clock clock;
 	double lag, fpsElapsed;
-	int frameCount;
-	bool isPaused;
+	int fps,frameCount;
+	bool isPaused,play;
 };
+
+#endif

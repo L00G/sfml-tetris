@@ -37,8 +37,8 @@ void Player::update(double time)
 		}
 	}
 	else {
-  		gameOver(timer / 0.2);
-		if (timer > 5)Init();
+  		gameOver(timer / 0.1);
+		if (timer > 2)Init();
 	}
 }
 

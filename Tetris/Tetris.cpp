@@ -1,12 +1,15 @@
 #include "Tetris.h"
 
 Tetris::Tetris() {
+	speedState = 1;
 	srand(time(NULL));
 	block.loadFromFile("block.png");
 	sprite = sf::Sprite(block);
+	font.loadFromFile("Tahu!.ttf");
 }
 void Tetris::Init()
 {
+	lineCount = 0;
 	for (int i = 0; i < BOARD_HEIGHT; i++) {
 		for (int j = 0; j < BOARD_WEIGHT; j++) {
 			board[i][j] = 0;
@@ -23,6 +26,7 @@ void Tetris::speedUp()
 void Tetris::speedDown()
 {
 	speedState--;
+	if (speedState < 1)speedState = 1;
 }
 void Tetris::newBlock() {
 	if (newBlockFlag) {
@@ -54,6 +58,7 @@ void Tetris::lineCheck() {
 			board[y][x] = board[i][x];
 		}
 		if (cnt != BOARD_WEIGHT) y--;
+		else lineCount++;
 	}
 }
 void Tetris::move(int dx, int dy) {
@@ -75,7 +80,15 @@ void Tetris::rotate() {
 	piece.rotate();
 	if (!check())piece.cancel();
 }
-void Tetris::drawBackground(sf::RenderWindow &window) {
+void Tetris::drawBackground(sf::RenderWindow &window) {	
+	sf::Text text;
+	text.setFillColor(sf::Color::Blue);
+	text.setFont(font);
+	text.setString(std::to_string(lineCount));
+	text.setCharacterSize(20);
+	text.setPosition(sf::Vector2f(100., 100.));
+	window.draw(text);
+
 	sf::CircleShape dot(2.f);
 	dot.setFillColor(sf::Color(52, 52, 52, 150));
 	for (int i = 0; i < 10; i++) {

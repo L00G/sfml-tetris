@@ -1,22 +1,46 @@
 #include "Ai.h"
 
-AI::AI(bool _isTrain)
+AI::AI()
 {
-	isTrain = _isTrain;
-	if (isTrain) {
-		for (int i = 0; i < 10; i++) {
-			gen[i].chromosome[0] = 0.305146;
-			gen[i].chromosome[1] = 0.158340;
-			gen[i].chromosome[2] = -0.421437;
-			gen[i].chromosome[3] = -0.115076;
-			/*for (int j = 0; j < 4; j++) {
-				gen[i].chromosome[j] = (double)rand() / RAND_MAX - 0.5;
-			}*/
-			gen[i] = norm(gen[i]);
-		}
-		calcutateFitness(gen, 10);
-		qsort(gen, totalGen, sizeof(Gen), compare);
+	generation = new Gen();
+
+	FILE *stream;
+	errno_t err = freopen_s(&stream, "result.txt", "r", stdin);
+	if (err != 0)
+		fprintf(stdout, "error on freopen\n");
+	else
+	{
+		fscanf_s(stream, "%lf %lf %lf %lf", &generation->chromosome[0], &generation->chromosome[1], &generation->chromosome[2], &generation->chromosome[3]);
+		fclose(stream);
 	}
+	timer = 0;
+	delay = 0.3;
+}
+
+AI::AI(int _numberRepetitions, int _generationNumber) {
+	numberRepetitions = _numberRepetitions;
+	generationNumber = _generationNumber;
+
+	generation = new Gen[generationNumber*1.3 + 5];
+	offspring = new Gen[generationNumber*0.3 + 5];
+
+	for (int i = 0; i < generationNumber; i++) {
+		for (int j = 0; j < 4; j++)	generation[i].chromosome[j] = (double)rand() / RAND_MAX - 0.5;
+		generation[i] = norm(generation[i]);
+	}
+	calcutateFitness(generation, generationNumber);
+	qsort(generation, generationNumber, sizeof(Gen), compare);
+}
+
+AI::~AI()
+{
+	delete[]generation;
+	delete[]offspring;
+}
+
+void AI::Init()
+{
+	Tetris::Init();
 }
 
 Gen AI::norm(Gen gen) {
@@ -26,18 +50,9 @@ Gen AI::norm(Gen gen) {
 	return gen;
 }
 
-AI::~AI()
-{
-}
-
-void AI::Init()
-{
-	Tetris::Init();
-}
-
 Move AI::bestMove(Gen &gen) {
 	Move move;
- 	double maxVal = -99999;
+ 	double maxVal = -INT_MAX;
 	Piece save = piece;
 	for (int i = 0; i < 4; i++) {
 		piece = save;
@@ -141,35 +156,34 @@ int AI::estimateBumpiness() {
 
 void AI::nextGeneration()
 {
-	for (int i = 0; i < 3; i++) {
-		Gen t = crossover(gen[tournamentSelect(0.7)], gen[tournamentSelect(0.7)]);
+	int maxOffspring = generationNumber * 0.3;
+	for (int i = 0; i < maxOffspring; i++) {
+		Gen t = crossover(generation[tournamentSelect(0.7)], generation[tournamentSelect(0.7)]);
 		if ((double)rand() / RAND_MAX < 0.3)
 			t = mutate(t);
-		tempgen[tempGenSize++] = t;
+		offspring[i++] = t;
 	}
-	calcutateFitness(tempgen,tempGenSize);
+	calcutateFitness(offspring, maxOffspring);
 
-	for (int i = 0; i < tempGenSize; i++) {
-		gen[totalGen++] = tempgen[i];
+	for (int i = 0; i < maxOffspring; i++) {
+		generation[generationNumber+i] = offspring[i];
 	}
-	tempGenSize = 0;
-	qsort(gen, totalGen, sizeof(Gen), compare);
-	totalGen = 10;
 
-	printf("#%d max clear : %d, %f %f %f %f\n", genTime++, gen[0].fitness, gen[0].chromosome[0], gen[0].chromosome[1], gen[0].chromosome[2], gen[0].chromosome[3]);
-	int tet = 0;
-	for (int i = 0; i < totalGen; i++) {
-		tet += gen[i].fitness;
-	}
-	printf("total fitness : %d \n", tet);
+	qsort(generation, generationNumber + maxOffspring, sizeof(Gen), compare);
 
+	printf("#%d max clear : %d, %f %f %f %f\n", nowRepetitions++, generation[0].fitness, generation[0].chromosome[0], generation[0].chromosome[1], generation[0].chromosome[2], generation[0].chromosome[3]);
 	
+	int total = 0;
+	for (int i = 0; i < generationNumber; i++) {
+		total += generation[i].fitness;
+	}
+	printf("total fitness : %d \n", total);
 }
 
 int AI::tournamentSelect(double offset) {
-	int a = rand() % totalGen, b = rand() % totalGen;
+	int a = rand() % generationNumber, b = rand() % generationNumber;
 	double r = (double)rand() / RAND_MAX;
-	return (gen[a].fitness > gen[b].fitness) ? ((offset > r) ? a : b) : ((offset <= r) ? b : a);
+	return (generation[a].fitness > generation[b].fitness) ? ((offset > r) ? a : b) : ((offset <= r) ? b : a);
 }
 
 Gen AI::crossover(Gen genA, Gen genB) {	
@@ -177,23 +191,26 @@ Gen AI::crossover(Gen genA, Gen genB) {
 	for (int i = 0; i < 4; i++) t.chromosome[i] = (genA.fitness +1)* genA.chromosome[i] + (genB.fitness +1)* genB.chromosome[i];
 	return norm(t);
 }
+
 Gen AI::mutate(Gen gen) {
-	double quantity = (double)rand()/RAND_MAX * 0.4 - 0.2;
-	gen.chromosome[rand() % 4] += quantity;
+	for (int i = 0; i < 4; i++) {
+		double quantity = (double)rand() / RAND_MAX * 0.2 - 0.2;
+		gen.chromosome[i] += quantity;		
+	}
 	return gen;
 }
-int updateCount = 0;
+
 void AI::update(double time)
 {
 	timer += time;
 
-	nextGeneration();
-	Init();
+	while (timer > delay) {
+		nextGeneration();
+		timer = 0;
+	}
 }
 
 void AI::render(sf::RenderWindow & window)
 {
-	drawBackground(window);
-	drawAllBlock(window);
-	if (!isOver()) drawNowBlock(window);
+	//nothing 
 }

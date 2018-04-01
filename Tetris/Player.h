@@ -15,6 +15,5 @@ public:
 	void drawPrediction(sf::RenderWindow &window);
 private:
 	Piece predictionPiece;
-	double timer;
 };
 

@@ -22,10 +22,11 @@ static int compare(const void *a, const void *b)
 class AI : public Tetris
 {
 public:
-	AI(bool _isTrain);
-	Gen norm(Gen a);
+	AI();
+	AI(int, int);
 	~AI();
 	void Init();
+	Gen norm(Gen a);
 	Move bestMove(Gen & gen);
 	void calcutateFitness(Gen * genList, int count);
 	int estimateHeight();
@@ -39,14 +40,8 @@ public:
 	virtual void update(double time) override;
 	virtual void render(sf::RenderWindow & window) override;
 public:
-	bool isTrain = false;
-	double timer=0, delay=0.0001;
-	int repeatCount = 0;
-	int genTime = 0;
-	int nowGen = 0;
-	int totalGen = 10;
-	Gen tempgen[3];
-	int tempGenSize = 0;
-	Gen gen[13];
+	Gen *generation, *offspring;
+	int numberRepetitions, generationNumber;
+	int nowRepetitions;
 };
 
