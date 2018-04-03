@@ -8,7 +8,6 @@ Tetris::Tetris() {
 	backgroundSprite = sf::Sprite(backgroud);
 	sprite = sf::Sprite(block);
 	font.loadFromFile("AllAgesDEMO.ttf");
-	SoundManager::Init();
 }
 void Tetris::Init()
 {

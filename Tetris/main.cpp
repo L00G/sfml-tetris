@@ -119,7 +119,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(400, 800), "Tetris", sf::Style::Titlebar | sf::Style::Close);
 
 	Game game;
-
+	SoundManager::Init();
 
 	int choice = -1;
 	while (window.isOpen()) {
