@@ -4,8 +4,11 @@ Tetris::Tetris() {
 	speedState = 1;
 	srand(time(NULL));
 	block.loadFromFile("block.png");
+	backgroud.loadFromFile("background.png");
+	backgroundSprite = sf::Sprite(backgroud);
 	sprite = sf::Sprite(block);
 	font.loadFromFile("AllAgesDEMO.ttf");
+	SoundManager::Init();
 }
 void Tetris::Init()
 {
@@ -50,6 +53,7 @@ bool Tetris::isOver() {
 	return false;
 }
 void Tetris::lineCheck() {
+	bool clear = false;
 	int y = BOARD_HEIGHT - 1;
 	for (int i = BOARD_HEIGHT - 1; i >= 0; i--) {
 		int cnt = 0;
@@ -58,10 +62,15 @@ void Tetris::lineCheck() {
 			board[y][x] = board[i][x];
 		}
 		if (cnt != BOARD_WEIGHT) y--;
-		else lineCount++;
+		else {
+			lineCount++;
+			clear = true;
+		}
 	}
+	if(clear)SoundManager::PlaySound(SoundManager::SOUND::LINE_CLEAR);
 }
 void Tetris::move(int dx, int dy) {
+	
 	piece.move(dx, dy);
 	if (!check()) {
 		piece.cancel();
@@ -70,13 +79,18 @@ void Tetris::move(int dx, int dy) {
 			newBlockFlag = true;
 		}
 	}
+	else {
+		if(dx)SoundManager::PlaySound(SoundManager::SOUND::MOVE_LR);
+	}
 }
 void Tetris::drop() {
+	SoundManager::PlaySound(SoundManager::SOUND::HARD_DROP);
 	while (!newBlockFlag) {
 		move(0,1);
 	}
 }
 void Tetris::rotate() {
+	SoundManager::PlaySound(SoundManager::SOUND::ROTATE_LR);
 	piece.rotate();
 	if (!check())piece.cancel();
 }
@@ -88,6 +102,8 @@ void Tetris::drawBackground(sf::RenderWindow &window) {
 	text.setCharacterSize(20);
 	text.setPosition(sf::Vector2f(100., 100.));
 	window.draw(text);
+
+	window.draw(backgroundSprite);
 
 	sf::CircleShape dot(2.f);
 	dot.setFillColor(sf::Color(52, 52, 52, 150));
@@ -107,8 +123,8 @@ void Tetris::drawAllBlock(sf::RenderWindow &window) {
 	for (int y = 0; y < BOARD_HEIGHT; y++) {
 		for (int x = 0; x < BOARD_WEIGHT; x++) {
 			if (board[y][x]) {
-				sprite.setTextureRect(sf::IntRect((board[y][x]-1) * 20, 0, 20, 20));
-				sprite.setPosition(sf::Vector2f(x * 20, 50 + y * 20));
+				sprite.setTextureRect(sf::IntRect((board[y][x] - 1) * 20, 0, 20, 20));
+				sprite.setPosition(sf::Vector2f(100 + x * 20, 200 + y * 20));
 				window.draw(sprite);
 			}
 		}
@@ -117,7 +133,7 @@ void Tetris::drawAllBlock(sf::RenderWindow &window) {
 void Tetris::drawNowBlock(sf::RenderWindow &window) {
 	sprite.setTextureRect(sf::IntRect((piece.getNumber() - 1) * 20, 0, 20, 20));
 	for (int i = 0; i < 4; i++) {
-		sprite.setPosition(sf::Vector2f(piece.getBlock(i).x * 20, 50 + piece.getBlock(i).y * 20));
+		sprite.setPosition(sf::Vector2f(100 + piece.getBlock(i).x * 20, 200 + piece.getBlock(i).y * 20));
 		window.draw(sprite);
 	}
 }

@@ -1,8 +1,9 @@
 #ifndef _TETRIS_H_
 #define _TETRIS_H_
 
-#include<SFML/Graphics.hpp>
-#include"Piece.h"
+#include <SFML/Graphics.hpp>
+#include "Piece.h"
+#include "SoundManager.h"
 
 static const int BOARD_WEIGHT = 10;
 static const int BOARD_HEIGHT = 25;
@@ -28,8 +29,8 @@ public:
 	void gameOver(int height);
 
 protected:
-	sf::Texture block;
-	sf::Sprite sprite;
+	sf::Texture block, backgroud;
+	sf::Sprite sprite, backgroundSprite;
 	sf::Font font;
 	Piece piece, nextPiece[2];
 	double timer, delay;

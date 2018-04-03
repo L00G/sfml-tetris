@@ -116,9 +116,11 @@ std::pair<int,std::pair<int,int>> geneticMenu(sf::RenderWindow &window) {
 }
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(400, 800), "Tetris");
-	
+	sf::RenderWindow window(sf::VideoMode(400, 800), "Tetris", sf::Style::Titlebar | sf::Style::Close);
+
 	Game game;
+
+
 	int choice = -1;
 	while (window.isOpen()) {
 		choice = menu(window);
@@ -132,7 +134,7 @@ int main() {
 				game.startAI();
 			}
 			else {
-				sf::RenderWindow dialog(sf::VideoMode(300, 100), "fail");
+				sf::RenderWindow dialog(sf::VideoMode(300, 100), "fail", sf::Style::Titlebar | sf::Style::Close);
 				sf::Font font;
 				font.loadFromFile("arial.ttf");
 				sf::Text text("You must run the genetuc algorithm at least once", font, 12);

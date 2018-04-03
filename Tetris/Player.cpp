@@ -55,7 +55,7 @@ void Player::drawPrediction(sf::RenderWindow & window)
 {
 	sprite.setColor(sf::Color(255, 255, 255, 80));
 	for (int i = 0; i < 4; i++) {
-		sprite.setPosition(sf::Vector2f(predictionPiece.getBlock(i).x * 20, 50 + predictionPiece.getBlock(i).y * 20));
+		sprite.setPosition(sf::Vector2f(100 + predictionPiece.getBlock(i).x * 20, 200 + predictionPiece.getBlock(i).y * 20));
 		window.draw(sprite);
 	}
 	sprite.setColor(sf::Color(255, 255, 255, 255));

@@ -26,6 +26,7 @@
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShuffleBag.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Tetris.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +39,7 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ShuffleBag.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Tetris.h" />
   </ItemGroup>
   <ItemGroup>

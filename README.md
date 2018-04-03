@@ -6,8 +6,7 @@
 
 ### + features
   - show next piece
-  - fast drop 
-  - piece fall
+  - soft, hard drop
   - predict drop location
   - "shuffle bag" for random piece
   - AI with Genetic Algorithm ( you can Genetic Algorithm Run and Test ) 
@@ -15,7 +14,7 @@
 #### + button 
   - reft, right arrow : move
   - up arrow : rotate
-  - down arrow : fast drop
-  - space : piece fall
+  - down arrow : soft drop
+  - space : hard fall
   - +&- : speed up & down
   - Enter : choice button in menu

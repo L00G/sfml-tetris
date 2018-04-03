@@ -90,7 +90,7 @@
 	}
 	void Game::render(sf::RenderWindow &window)
 	{	
-		window.clear(sf::Color::White);	
+		window.clear();	
 		tetris->render(window);
 		window.display();
 	}

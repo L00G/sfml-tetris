@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
 
 #include "Tetris.h"
 
@@ -17,3 +18,4 @@ private:
 	Piece predictionPiece;
 };
 
+#endif // !_PLAYER_H_

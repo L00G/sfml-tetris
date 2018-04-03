@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _AI_H_
+#define _AI_H_
 
 #include "Tetris.h"
 
@@ -46,3 +47,4 @@ public:
 	bool traning;
 };
 
+#endif // !_AI_H_
